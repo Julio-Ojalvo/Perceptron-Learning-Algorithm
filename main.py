@@ -6,8 +6,6 @@ Created on Tue Oct 12 20:38:26 2021
 """
 
 from Perceptron import Perceptron
-
-
 import csv
 
 def loadIris(examples,classes):
@@ -91,12 +89,13 @@ if __name__ == '__main__':
     examples = []
     classes = []
     
-    # loadIris(examples,classes)
-    # loadHappy(examples,classes)
+    #loadIris(examples,classes)
+    #loadHappy(examples,classes)
     # loadHouse(examples,classes)
-    # loadHaberman(examples,classes)
-    # loadTTT(examples, classes)
+    #loadHaberman(examples,classes)
+    #loadTTT(examples, classes)
     loadBank(examples, classes)
     
-    per = Perceptron(examples,classes,100,0.01,verbose="low")
+    per = Perceptron(examples,classes,2,0.01,verbose="none")
     per.CompleteTest()
+    per.RunModel()
