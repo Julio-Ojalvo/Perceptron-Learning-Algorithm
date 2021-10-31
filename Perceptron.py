@@ -5,6 +5,9 @@ Created on Tue Oct 12 20:36:19 2021
 @author: julio
 """
 
+import numpy as np
+from matplotlib import pyplot as plt
+
 class Perceptron:
     def __init__(self,examples,classes,epochs,learningRate,bias=0,verbose="none"):
         verboseD = {"none":0,"low":1,"medium":2,"high":3}
@@ -38,12 +41,11 @@ class Perceptron:
             num_false = 0 # number of false examples
             c = 0
             if self.verbose >= 2: print("Beginning epoch " + str(self.epochCounter))
+
             for ex in self.examples:
                 hyp = self.Hypothesis(ex)
                 if self.verbose >= 3: print("\n" + "Hypothesis was " + str(hyp))
                 if self.verbose >= 3: print("Correct class was " + str(self.classes[c]))
-
-
                 error = self.classes[c] - hyp
                 c += 1
                 if error != 0:
@@ -58,8 +60,11 @@ class Perceptron:
             if self.verbose >= 1: print("Weight values after " + str(self.epochCounter) + " epochs are " + str(self.weights) + "\n")
             if epoch < self.epochs-1: self.epochCounter += 1
             
-    def CompleteTest(self):
+    def RunModel(self, epochs, learning_rate):
+        self.epochs = epochs
+        self.learningRate = learning_rate
         self.UpdateWeights()
+        self.EvaluatePerformance()
         # self.Print()
     
     def DotProduct(self,attributes,weights):
@@ -68,7 +73,7 @@ class Perceptron:
             res += attributes[x]*weights[x]
         return res
 
-    def RunModel(self):
+    def EvaluatePerformance(self):
         counter = 0
         for example in self.examples:
             ex_hyp = self.Hypothesis(example)
@@ -82,7 +87,7 @@ class Perceptron:
 
             # count false neg
             if ex_hyp != ex_class and ex_class == 0:
-                self.n_tp += 1
+                self.n_fn += 1
 
             # count true pos
             if ex_hyp == ex_class and ex_class == 1:
@@ -90,22 +95,22 @@ class Perceptron:
 
             # count true neg
             if ex_hyp == ex_class and ex_class == 0:
-                self.n_tp += 1
+                self.n_tn += 1
 
-        # calculate metrics
-        precision = self.n_tp / (self.n_tp + self.n_fp)
-        recall = self.n_tp / (self.n_tp + self.n_fn)
-        sensitivity = self.n_tp / (self.n_tp + self.n_fn)
+            # calculate metrics
+        #precision = self.n_tp / (self.n_tp + self.n_fp)
+        #recall = self.n_tp / (self.n_tp + self.n_fn)
+       # sensitivity = self.n_tp / (self.n_tp + self.n_fn)
         #specificity = self.n_tn / (self.n_tn + self.n_fp)
 
         print("n_fp: " + str(self.n_fp))
         print("n_fn: " + str(self.n_fn))
         print("n_tp: " + str(self.n_tp))
         print("n_fn: " + str(self.n_fn))
-        print("Precision: " + str(precision))
-        print("Recall: " + str(recall))
-        print("Sensitivity: " + str(sensitivity))
-       # print("Specificity: " + str(specificity))
+        #print("Precision: " + str(precision))
+        #print("Recall: " + str(recall))
+        #print("Sensitivity: " + str(sensitivity))
+        #print("Specificity: " + str(specificity))
 
     def Print(self):
         print("\nSuccess rate reached " + str(self.successRate*100) + "% in " + str(self.epochCounter) + " epochs")

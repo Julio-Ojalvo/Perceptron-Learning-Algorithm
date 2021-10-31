@@ -7,6 +7,8 @@ Created on Tue Oct 12 20:38:26 2021
 
 from Perceptron import Perceptron
 import csv
+import numpy as np
+from matplotlib import pyplot as plt
 
 def loadIris(examples,classes):
     with open("iris.data", newline = '') as csvFile:
@@ -85,17 +87,43 @@ def loadBank(examples,classes):
             examples.append(tempList)
             classes.append(float(row[4]))
 
+def loadDryBean(examples,classes):
+    with open("Dry_Beans_Dataset.csv", newline='') as csvFile:
+        rows = csv.reader(csvFile,delimiter=',')
+
+        for row in rows:
+            temp = [float(i) for i in row[:16]]
+            if row[16] == "BOMBAY":
+                classes.append(1)
+                examples.append(temp)
+            if row[16] == "SIRA":
+                classes.append(0)
+                examples.append(temp)
+
+
 if __name__ == '__main__':
     examples = []
     classes = []
+
+    training = np.split(np.array(examples))
+
+    n_pos = 0
+    n_neg = 0
+    for c in classes:
+        if c == 1:
+            n_pos += 1
+        else:
+            n_neg += 1
+
     
     #loadIris(examples,classes)
     #loadHappy(examples,classes)
     # loadHouse(examples,classes)
     #loadHaberman(examples,classes)
     #loadTTT(examples, classes)
-    loadBank(examples, classes)
+    #loadBank(examples, classes)
+    loadDryBean(examples,classes)
     
-    per = Perceptron(examples,classes,2,0.01,verbose="none")
-    per.CompleteTest()
-    per.RunModel()
+    per = Perceptron(examples,classes,epochs=10,learningRate=0.01,verbose="medium")
+
+    per.RunModel(epochs=10,learning_rate=0.01)
