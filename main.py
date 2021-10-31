@@ -10,7 +10,11 @@ import csv
 import numpy as np
 from matplotlib import pyplot as plt
 from imblearn.under_sampling import RandomUnderSampler
+from imblearn.under_sampling import TomekLinks
+from imblearn.over_sampling import SMOTE
 from sklearn.model_selection import train_test_split
+from sklearn.linear_model import Perceptron as SKPerceptron
+from collections import Counter
 
 def loadIris(examples,classes):
     with open("iris.data", newline = '') as csvFile:
@@ -110,31 +114,47 @@ if __name__ == '__main__':
     #loadIris(examples,classes)
     #loadHappy(examples,classes)
     #loadHouse(examples,classes)
-    #loadHaberman(examples,classes)
+    loadHaberman(examples,classes)
     #loadTTT(examples, classes)
-    loadBank(examples, classes)
+    #loadBank(examples, classes)
     #loadDryBean(examples,classes)
 
     # training = np.split(np.array(examples))
-
-    n_pos = 0
-    n_neg = 0
-    for c in classes:
-        if c == 1:
-            n_pos += 1
-        else:
-            n_neg += 1
 
     x_train, x_test, y_train, y_test = train_test_split(examples,classes,test_size=0.3)
 
     undersample = RandomUnderSampler(sampling_strategy='majority')
     x_train_under, y_train_under = undersample.fit_resample(x_train, y_train)
 
-    per_balanced = Perceptron(examples=x_train_under,classes=y_train_under,epochs=10,learningRate=0.01,verbose="none")
-    per_imbalanced = Perceptron(examples=examples,classes=classes,epochs=10,learningRate=0.01,verbose="none")
-
-    per_balanced.RunModel(epochs=10,learning_rate=0.01)
+    print("Class balance before undersampling: " + str(Counter(y_train)))
+    per_imbalanced = Perceptron(examples=x_train, classes=y_train, x_test=x_test, y_test=y_test, epochs=10,learningRate=0.01,verbose="none")
     per_imbalanced.RunModel(epochs=10,learning_rate=0.01)
-
-    per_balanced.EvaluatePerformance()
+    print("Imbalanced training set performance: ")
     per_imbalanced.EvaluatePerformance()
+
+    print("")
+
+    print("Class balance after undersampling: " + str(Counter(y_train_under)))
+    per_balanced = Perceptron(examples=x_train_under,classes=y_train_under,x_test=x_test, y_test=y_test,epochs=10,learningRate=0.01,verbose="none")
+    per_balanced.RunModel(epochs=10,learning_rate=0.01)
+    print("Balanced training set performance: ")
+    per_balanced.EvaluatePerformance()
+    print("")
+
+    #clf = SKPerceptron(max_iter=10, eta0=0.01)
+    #clf.fit(x_train,y_train)
+    #print(clf.score(x_test,y_test))
+    #clf.fit(x_train_under,y_train_under)
+    #print(clf.score(x_test,y_test))
+
+
+    #x_train_imbalanced = np.split(np.array(examples),2)[0]
+    #x_test_imbalanced = np.split(np.array(examples),2)[1]
+    #y_train_imbalanced = np.split(np.array(classes),2)[0]
+    #y_test_imbalanced = np.split(np.array(classes),2)[1]
+
+
+
+
+
+

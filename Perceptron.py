@@ -9,7 +9,7 @@ import numpy as np
 from matplotlib import pyplot as plt
 
 class Perceptron:
-    def __init__(self,examples,classes,epochs,learningRate,bias=0,verbose="none"):
+    def __init__(self,examples,classes,x_test,y_test,epochs,learningRate,bias=0,verbose="none"):
         verboseD = {"none":0,"low":1,"medium":2,"high":3}
         self.examples = examples
         self.classes = classes
@@ -20,6 +20,8 @@ class Perceptron:
         self.successRate = 0
         self.epochCounter = 1
         self.verbose = verboseD[verbose]
+        self.x_test = x_test
+        self.y_test = y_test
 
         self.n_fp = 0   # false pos
         self.n_fn = 0   # false neg
@@ -75,8 +77,8 @@ class Perceptron:
 
     def EvaluatePerformance(self):
         counter = 0
-        for example in self.examples:
-            ex_hyp = self.Hypothesis(example)
+        for ex in self.examples:
+            ex_hyp = self.Hypothesis(ex)
             ex_class = self.classes[counter]
             #print("Hypothesis: " + str(ex_hyp) + " | Correct class: " + str(ex_class))
             counter += 1
