@@ -64,7 +64,7 @@ class Perceptron:
         self.epochs = epochs
         self.learningRate = learning_rate
         self.UpdateWeights()
-        self.EvaluatePerformance()
+        #self.EvaluatePerformance()
         # self.Print()
     
     def DotProduct(self,attributes,weights):
@@ -97,11 +97,13 @@ class Perceptron:
             if ex_hyp == ex_class and ex_class == 0:
                 self.n_tn += 1
 
-            # calculate metrics
+        # calculate metrics
         #precision = self.n_tp / (self.n_tp + self.n_fp)
         #recall = self.n_tp / (self.n_tp + self.n_fn)
         #sensitivity = self.n_tp / (self.n_tp + self.n_fn)
         #specificity = self.n_tn / (self.n_tn + self.n_fp)
+        error_rate = (self.n_fp + self.n_fn) / (self.n_fp + self.n_fn + self.n_tp + self.n_tn)
+        accuracy = 1 - error_rate
 
         #print("n_fp: " + str(self.n_fp))
         #print("n_fn: " + str(self.n_fn))
@@ -111,6 +113,7 @@ class Perceptron:
         #print("Recall: " + str(recall))
         #print("Sensitivity: " + str(sensitivity))
         #print("Specificity: " + str(specificity))
+        print("Accuracy: " + str(accuracy))
 
     def Print(self):
         print("\nSuccess rate reached " + str(self.successRate*100) + "% in " + str(self.epochCounter) + " epochs")

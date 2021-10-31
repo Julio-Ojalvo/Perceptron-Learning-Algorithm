@@ -117,8 +117,6 @@ if __name__ == '__main__':
 
     # training = np.split(np.array(examples))
 
-
-
     n_pos = 0
     n_neg = 0
     for c in classes:
@@ -130,8 +128,13 @@ if __name__ == '__main__':
     x_train, x_test, y_train, y_test = train_test_split(examples,classes,test_size=0.3)
 
     undersample = RandomUnderSampler(sampling_strategy='majority')
-    x_train_under, y_train_under = undersample.fit_resample(examples, classes)
+    x_train_under, y_train_under = undersample.fit_resample(x_train, y_train)
 
-    per = Perceptron(examples=x_train_under,classes=y_train_under,epochs=10,learningRate=0.01,verbose="low")
+    per_balanced = Perceptron(examples=x_train_under,classes=y_train_under,epochs=10,learningRate=0.01,verbose="none")
+    per_imbalanced = Perceptron(examples=examples,classes=classes,epochs=10,learningRate=0.01,verbose="none")
 
-    per.RunModel(epochs=10,learning_rate=0.01)
+    per_balanced.RunModel(epochs=10,learning_rate=0.01)
+    per_imbalanced.RunModel(epochs=10,learning_rate=0.01)
+
+    per_balanced.EvaluatePerformance()
+    per_imbalanced.EvaluatePerformance()
