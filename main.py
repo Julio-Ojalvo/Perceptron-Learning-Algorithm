@@ -132,6 +132,6 @@ if __name__ == '__main__':
     undersample = RandomUnderSampler(sampling_strategy='majority')
     x_train_under, y_train_under = undersample.fit_resample(examples, classes)
 
-    per = Perceptron(examples=x_train_under,classes=y_train_under,epochs=10,learningRate=0.01,verbose="medium")
+    per = Perceptron(examples=x_train_under,classes=y_train_under,epochs=10,learningRate=0.01,verbose="low")
 
-    #per.RunModel(epochs=10,learning_rate=0.01)
+    per.RunModel(epochs=10,learning_rate=0.01)

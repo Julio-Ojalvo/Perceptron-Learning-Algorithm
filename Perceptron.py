@@ -78,7 +78,7 @@ class Perceptron:
         for example in self.examples:
             ex_hyp = self.Hypothesis(example)
             ex_class = self.classes[counter]
-            print("Hypothesis: " + str(ex_hyp) + " | Correct class: " + str(ex_class))
+            #print("Hypothesis: " + str(ex_hyp) + " | Correct class: " + str(ex_class))
             counter += 1
 
             # count false pos
@@ -100,13 +100,13 @@ class Perceptron:
             # calculate metrics
         #precision = self.n_tp / (self.n_tp + self.n_fp)
         #recall = self.n_tp / (self.n_tp + self.n_fn)
-        sensitivity = self.n_tp / (self.n_tp + self.n_fn)
+        #sensitivity = self.n_tp / (self.n_tp + self.n_fn)
         #specificity = self.n_tn / (self.n_tn + self.n_fp)
 
-        print("n_fp: " + str(self.n_fp))
-        print("n_fn: " + str(self.n_fn))
-        print("n_tp: " + str(self.n_tp))
-        print("n_tn: " + str(self.n_tn))
+        #print("n_fp: " + str(self.n_fp))
+        #print("n_fn: " + str(self.n_fn))
+        #print("n_tp: " + str(self.n_tp))
+        #print("n_tn: " + str(self.n_tn))
         #print("Precision: " + str(precision))
         #print("Recall: " + str(recall))
         #print("Sensitivity: " + str(sensitivity))
