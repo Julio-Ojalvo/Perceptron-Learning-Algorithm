@@ -9,6 +9,8 @@ from Perceptron import Perceptron
 import csv
 import numpy as np
 from matplotlib import pyplot as plt
+from imblearn.under_sampling import RandomUnderSampler
+from sklearn.model_selection import train_test_split
 
 def loadIris(examples,classes):
     with open("iris.data", newline = '') as csvFile:
@@ -105,7 +107,17 @@ if __name__ == '__main__':
     examples = []
     classes = []
 
-    training = np.split(np.array(examples))
+    #loadIris(examples,classes)
+    #loadHappy(examples,classes)
+    #loadHouse(examples,classes)
+    #loadHaberman(examples,classes)
+    #loadTTT(examples, classes)
+    loadBank(examples, classes)
+    #loadDryBean(examples,classes)
+
+    # training = np.split(np.array(examples))
+
+
 
     n_pos = 0
     n_neg = 0
@@ -115,15 +127,11 @@ if __name__ == '__main__':
         else:
             n_neg += 1
 
-    
-    #loadIris(examples,classes)
-    #loadHappy(examples,classes)
-    # loadHouse(examples,classes)
-    #loadHaberman(examples,classes)
-    #loadTTT(examples, classes)
-    #loadBank(examples, classes)
-    loadDryBean(examples,classes)
-    
-    per = Perceptron(examples,classes,epochs=10,learningRate=0.01,verbose="medium")
+    x_train, x_test, y_train, y_test = train_test_split(examples,classes,test_size=0.3)
 
-    per.RunModel(epochs=10,learning_rate=0.01)
+    undersample = RandomUnderSampler(sampling_strategy='majority')
+    x_train_under, y_train_under = undersample.fit_resample(examples, classes)
+
+    per = Perceptron(examples=x_train_under,classes=y_train_under,epochs=10,learningRate=0.01,verbose="medium")
+
+    #per.RunModel(epochs=10,learning_rate=0.01)
