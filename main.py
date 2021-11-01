@@ -166,6 +166,8 @@ def splitBankData(data, examples, classes):
 if __name__ == '__main__':
     examples = []
     classes = []
+    mExamples = []
+    mClasses = []
 
     # loadIris(examples,classes)
     # loadHappy(examples,classes)
@@ -177,7 +179,7 @@ if __name__ == '__main__':
 
     x = joinData(examples, classes)
     y = arrangeBankData(x, -1)
-    splitBankData(y, examples, classes)
+    splitBankData(y, mExamples, mClasses)
 
     # training = np.split(np.array(examples))
 
@@ -195,7 +197,7 @@ if __name__ == '__main__':
     print("Class balance before undersampling: " + str(Counter(y_train)))
     #plt.bar(Counter(y_train).keys(), Counter(y_train).values())
     #plt.show()
-    per_imbalanced = Perceptron(examples=x_train, classes=y_train, x_test=x_test, y_test=y_test, epochs=10,learningRate=0.01,verbose="none")
+    per_imbalanced = Perceptron(examples=x_train, classes=y_train, x_test=mExamples, y_test=mClasses, epochs=10,learningRate=0.01,verbose="none")
     per_imbalanced.RunModel(epochs=10,learning_rate=0.01)
     print("Imbalanced training set performance: ")
     per_imbalanced.EvaluatePerformance()
