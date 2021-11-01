@@ -77,45 +77,54 @@ class Perceptron:
 
     def EvaluatePerformance(self):
         counter = 0
-        for ex in self.examples:
+        for ex in self.x_test:
             ex_hyp = self.Hypothesis(ex)
-            ex_class = self.classes[counter]
+            ex_class = self.y_test[counter]
             #print("Hypothesis: " + str(ex_hyp) + " | Correct class: " + str(ex_class))
             counter += 1
 
             # count false pos
-            if ex_hyp != ex_class and ex_class == 1:
+            if ex_hyp != ex_class and ex_class == 0:
                 self.n_fp += 1
 
             # count false neg
-            if ex_hyp != ex_class and ex_class == 0:
+            if ex_hyp != ex_class and ex_class == 1:
                 self.n_fn += 1
 
             # count true pos
-            if ex_hyp == ex_class and ex_class == 1:
+            if ex_hyp == ex_class and ex_class == 0:
                 self.n_tp += 1
 
             # count true neg
-            if ex_hyp == ex_class and ex_class == 0:
+            if ex_hyp == ex_class and ex_class == 1:
                 self.n_tn += 1
 
         # calculate metrics
-        #precision = self.n_tp / (self.n_tp + self.n_fp)
-        #recall = self.n_tp / (self.n_tp + self.n_fn)
+        if (self.n_tp + self.n_fp != 0):
+            precision = self.n_tp / (self.n_tp + self.n_fp)
+        else:
+            precision = 1
+
+        if (self.n_tp + self.n_fn != 0):
+            recall = self.n_tp / (self.n_tp + self.n_fn)
+        else:
+            recall = 0
+
         #sensitivity = self.n_tp / (self.n_tp + self.n_fn)
         #specificity = self.n_tn / (self.n_tn + self.n_fp)
         error_rate = (self.n_fp + self.n_fn) / (self.n_fp + self.n_fn + self.n_tp + self.n_tn)
-        accuracy = 1 - error_rate
+        accuracy = 1-error_rate
 
-        #print("n_fp: " + str(self.n_fp))
-        #print("n_fn: " + str(self.n_fn))
-        #print("n_tp: " + str(self.n_tp))
-        #print("n_tn: " + str(self.n_tn))
-        #print("Precision: " + str(precision))
-        #print("Recall: " + str(recall))
+        print("n_fp: " + str(self.n_fp))
+        print("n_fn: " + str(self.n_fn))
+        print("n_tp: " + str(self.n_tp))
+        print("n_tn: " + str(self.n_tn))
+        print("Precision: " + str(precision))
+        print("Recall: " + str(recall))
         #print("Sensitivity: " + str(sensitivity))
         #print("Specificity: " + str(specificity))
         print("Accuracy: " + str(accuracy))
+        #print("Error rate: " + str(error_rate))
 
     def Print(self):
         print("\nSuccess rate reached " + str(self.successRate*100) + "% in " + str(self.epochCounter) + " epochs")
